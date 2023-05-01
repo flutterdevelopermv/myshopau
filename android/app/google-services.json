@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "610193133250",
+    "project_id": "myshop-au",
+    "storage_bucket": "myshop-au.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610193133250:android:17cc189108756be70c355b",
+        "android_client_info": {
+          "package_name": "com.myshopau"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610193133250-9hbt3kmiiiu3r08e6htk5n8a0kl11fmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXpzlhlGGBb93Xwt9vLsd3xdTN8K8--dA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610193133250-9hbt3kmiiiu3r08e6htk5n8a0kl11fmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
