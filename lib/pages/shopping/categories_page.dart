@@ -17,10 +17,10 @@ class CategoriesPage extends StatelessWidget {
         children: [
           Expanded(
             child: FirestoreListViewBuilder(
-                query: CategoryModel.col_ref
-                    .orderBy(CategoryModel.upload_time_key),
+                query:
+                    ShopCategory.col_ref.orderBy(ShopCategory.upload_time_key),
                 builder: (p0, ds) {
-                  var cm = CategoryModel.fromDS(ds);
+                  var cm = ShopCategory.fromDS(ds);
                   return GFListTile(
                     shadow: const BoxShadow(color: Colors.transparent),
                     avatar: GFAvatar(

@@ -110,7 +110,7 @@ class Product {
       low_price: (listPrcs?.first.price ?? listPrcs?.first.mrp) ?? 0,
       high_price: (listPrcs?.last.price ?? listPrcs?.last.mrp) ?? 0,
       list_categories:
-          listCat?.map((e) => CategoryModel.col_ref.doc(e)).toList() ?? [],
+          listCat?.map((e) => ShopCategory.col_ref.doc(e)).toList() ?? [],
       descriptions:
           (json[descriptions_key] as List?)?.map((e) => e.toString()).toList(),
       is_live: json[is_live_key],

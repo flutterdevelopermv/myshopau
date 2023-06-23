@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../a_utils/fire.dart';
 
-class CategoryModel {
+class ShopCategory {
   String name;
   String? image_url;
   DateTime upload_time;
@@ -13,7 +13,7 @@ class CategoryModel {
   int? rank;
   DocumentReference<Map<String, dynamic>>? docRef;
 
-  CategoryModel({
+  ShopCategory({
     required this.name,
     required this.image_url,
     required this.upload_time,
@@ -48,10 +48,10 @@ class CategoryModel {
   static const rank_key = "rank";
   //
 
-  static CategoryModel fromDS(DocumentSnapshot<Map<String, dynamic>> docSnap) {
+  static ShopCategory fromDS(DocumentSnapshot<Map<String, dynamic>> docSnap) {
     Map<String, dynamic> json = docSnap.data() ?? {};
 
-    return CategoryModel(
+    return ShopCategory(
       name: json[name_key],
       image_url: json[image_url_key],
       upload_time: json[upload_time_key]?.toDate(),

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 //
 class AuAuTrans {
-  int debit_user;
-  int credit_user;
+  DocumentReference<Map<String, dynamic>> debit_user;
+  DocumentReference<Map<String, dynamic>> credit_user;
   num amount;
   DateTime init_time;
 
@@ -16,10 +17,10 @@ class AuAuTrans {
 
 //
 class PrimeTrans {
-  int au_user;
+  DocumentReference<Map<String, dynamic>> au_user;
   bool is_cash;
   bool prime_to_au;
-  int primer;
+  DocumentReference<Map<String, dynamic>> primer;
   num amount;
   DateTime init_time;
   //
@@ -35,17 +36,17 @@ class PrimeTrans {
 
 //
 class ShopTrans {
-  int au_user;
-  bool is_cash;
-  bool au_to_shop;
+  DocumentReference<Map<String, dynamic>> au_user;
+  bool? is_au_cash;
+  bool? is_refund;
   int order_id;
   num amount;
   DateTime init_time;
   //
   ShopTrans({
     required this.au_user,
-    required this.is_cash,
-    required this.au_to_shop,
+    required this.is_au_cash,
+    required this.is_refund,
     required this.order_id,
     required this.amount,
     required this.init_time,
@@ -54,9 +55,9 @@ class ShopTrans {
 
 //
 class BankTrans {
-  int au_user;
-  bool bank_to_au;
-  num au_amount;
+  DocumentReference<Map<String, dynamic>> au_user;
+  bool? is_au_to_bank;
+  num amount;
   DateTime init_time;
   DateTime? settlement_time;
 
@@ -67,13 +68,13 @@ class BankTrans {
   num deductions;
   String? decuction_remarks;
   String? bank_trans_id;
-  int? order_id;
+  int? pg_order_id;
 
   //
   BankTrans({
     required this.au_user,
-    required this.bank_to_au,
-    required this.au_amount,
+    required this.is_au_to_bank,
+    required this.amount,
     required this.init_time,
     required this.settlement_time,
     required this.status,
@@ -82,13 +83,13 @@ class BankTrans {
     required this.deductions,
     required this.decuction_remarks,
     required this.bank_trans_id,
-    required this.order_id,
+    required this.pg_order_id,
   });
 }
 
 //
 class CashCoinsTrans {
-  int au_user;
+  DocumentReference<Map<String, dynamic>> au_user;
   num cash_amount;
   num coins_amount;
   bool cash_to_coins;
@@ -104,49 +105,4 @@ class CashCoinsTrans {
     required this.init_time,
     required this.trans_remarks,
   });
-}
-
-//
-class Balances {
-  var au = AuAuTrans(
-      debit_user: 0, credit_user: 1, amount: 20, init_time: DateTime.now());
-  //2
-  var ps = PrimeTrans(
-      au_user: 1,
-      is_cash: true,
-      prime_to_au: true,
-      primer: 2,
-      amount: 1,
-      init_time: DateTime.now());
-  //3
-  var sp = ShopTrans(
-      au_user: 1,
-      is_cash: true,
-      au_to_shop: false,
-      order_id: 1,
-      amount: 1,
-      init_time: DateTime.now());
-  //4
-  var cc = CashCoinsTrans(
-      au_user: 1,
-      cash_amount: 1,
-      coins_amount: 1,
-      cash_to_coins: false,
-      init_time: DateTime.now(),
-      trans_remarks: null);
-  //5
-  var bk = BankTrans(
-      au_user: 1,
-      bank_to_au: true,
-      au_amount: 1,
-      init_time: DateTime.now(),
-      settlement_time: DateTime.now(),
-      status: 10,
-      admin_comments: null,
-      user_comments: null,
-      deductions: 1,
-      decuction_remarks: null,
-      bank_trans_id: "1",
-      order_id: 1);
-
 }
