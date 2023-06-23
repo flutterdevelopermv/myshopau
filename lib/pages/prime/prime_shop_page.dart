@@ -5,7 +5,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:myshopau/models/auth_user.dart';
 import 'package:myshopau/pages/account/signup_page.dart';
 import 'package:myshopau/pages/prime/prime_home_screen.dart';
-
 import '../../models/prime_member.dart';
 import '../a_widgets/firestore_listview_builder.dart';
 import '../a_widgets/text_widget.dart';
