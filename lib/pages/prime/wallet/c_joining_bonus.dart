@@ -92,36 +92,36 @@ class JoiningBonusWidget extends StatelessWidget {
   }
 
   //
-  Future<void> matrixWithdrawBS() async {
-    var isKycVerified = await kycMOs.isPrimeKycVerified(pmm.userName!);
-    var mi = await withdrawMOs.matrixIncomeF(pmm.memberPosition!);
+  // Future<void> matrixWithdrawBS() async {
+  //   var isKycVerified = await kycMOs.isPrimeKycVerified(pmm.userName!);
+  //   var mi = await withdrawMOs.matrixIncomeF(pmm.memberPosition!);
 
-    if (isKycVerified != true || needDirectRef(mi.toInt()) != 0) {
-      Get.bottomSheet(Container(
-        height: 250,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isKycVerified != true)
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                      "$stopEmoji   Your KYC is not verified.\nPlease get it verified to withdraw"),
-                ),
-              if (needDirectRef(mi.toInt()) != 0)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "$stopEmoji   You are in Level ${currentLevel(mi.toInt())}, you need to have ${needDirectRef(mi.toInt())} direct referrals to eligible for withdraw (current direct referrels = ${pmm.directIncome})",
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ));
-    }
-  }
+  //   if (isKycVerified != true || needDirectRef(mi.toInt()) != 0) {
+  //     Get.bottomSheet(Container(
+  //       height: 250,
+  //       color: Colors.white,
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             if (isKycVerified != true)
+  //               const Padding(
+  //                 padding: EdgeInsets.all(8.0),
+  //                 child: Text(
+  //                     "$stopEmoji   Your KYC is not verified.\nPlease get it verified to withdraw"),
+  //               ),
+  //             if (needDirectRef(mi.toInt()) != 0)
+  //               Padding(
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 child: Text(
+  //                   "$stopEmoji   You are in Level ${currentLevel(mi.toInt())}, you need to have ${needDirectRef(mi.toInt())} direct referrals to eligible for withdraw (current direct referrels = ${pmm.directIncome})",
+  //                 ),
+  //               ),
+  //           ],
+  //         ),
+  //       ),
+  //     ));
+  //   }
+  // }
 }

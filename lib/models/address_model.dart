@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:myshopau/models/auth_user.dart';
 
-class AddressModel {
+class AddressM {
   String name;
   String phone;
   String house;
@@ -17,7 +17,7 @@ class AddressModel {
   DateTime updated_time;
   DocumentReference<Map<String, dynamic>>? docRef;
 
-  AddressModel({
+  AddressM({
     required this.name,
     required this.phone,
     required this.house,
@@ -57,8 +57,8 @@ class AddressModel {
     };
   }
 
-  factory AddressModel.fromMap(Map<String, dynamic> addressMap) {
-    return AddressModel(
+  factory AddressM.fromMap(Map<String, dynamic> addressMap) {
+    return AddressM(
       name: addressMap[addressMOs.name] ?? "",
       phone: addressMap[addressMOs.phone] ?? "",
       house: addressMap[addressMOs.house] ?? "",
@@ -73,8 +73,8 @@ class AddressModel {
   }
 
   //
-  static AddressModel emptyAddress() {
-    return AddressModel(
+  static AddressM emptyAddress() {
+    return AddressM(
         name: "",
         phone: "",
         house: "",
@@ -111,10 +111,10 @@ class AddressModelObjects {
 
   // final addressCR = authUserCR.doc(fireUser()?.uid).collection("address");
 
-  Future<AddressModel> dummyAddressModel() async {
+  Future<AddressM> dummyAddressModel() async {
     var pinM = await getPinModel(521126);
 
-    return AddressModel(
+    return AddressM(
       name: "MV Phaneendra",
       phone: "9848699360",
       house: "7-27/1, last house",

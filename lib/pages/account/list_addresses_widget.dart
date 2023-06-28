@@ -25,8 +25,7 @@ class AddressesScreen extends StatelessWidget {
                     splashColor: Colors.blueGrey,
                     onPressed: () async {
                       await Future.delayed(const Duration(milliseconds: 300));
-                      Get.to(
-                          () => AddressEditScreen(AddressModel.emptyAddress()));
+                      Get.to(() => AddressEditScreen(AddressM.emptyAddress()));
                     },
                     child: const Text(" +   Add address   ")),
               )),
@@ -36,10 +35,10 @@ class AddressesScreen extends StatelessWidget {
                 loadingBuilder: (context) {
                   return const GFLoader();
                 },
-                query: AddressModel.col_ref
-                    .orderBy(AddressModel.updated_time_key, descending: true),
+                query: AddressM.col_ref
+                    .orderBy(AddressM.updated_time_key, descending: true),
                 itemBuilder: ((context, doc) {
-                  var am = AddressModel.fromMap(doc.data());
+                  var am = AddressM.fromMap(doc.data());
                   am.docRef = doc.reference;
                   return Padding(
                     padding: const EdgeInsets.all(5.0),

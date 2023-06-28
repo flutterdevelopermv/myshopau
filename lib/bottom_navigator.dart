@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myshopau/a_utils/fcm.dart';
 import 'package:myshopau/a_utils/hive.dart';
 import 'package:myshopau/models/auth_user.dart';
+import 'package:myshopau/pages/a_widgets/text_widget.dart';
 import 'package:myshopau/pages/account/phone_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -49,6 +51,11 @@ class _BottomBarWithBodyState extends State<BottomBarWithBody> {
               if (snapshot.hasData && snapshot.data != null) {
                 return const UserAccountScreen();
               }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Scaffold(
+                    appBar: AppBar(title: const TextW("My Account")),
+                    body: const GFLoader());
+              }
               return const PhoneAuthPage();
             }),
         StreamBuilder<User?>(
@@ -56,6 +63,11 @@ class _BottomBarWithBodyState extends State<BottomBarWithBody> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
                 return const PrimeShopPage();
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Scaffold(
+                    appBar: AppBar(title: const TextW("My Account")),
+                    body: const GFLoader());
               }
 
               return const PhoneAuthPage();

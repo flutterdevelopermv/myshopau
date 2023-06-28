@@ -10,13 +10,13 @@ import 'package:collection/collection.dart';
 class Product {
   int id;
   String name;
-  List<ProductImage>? list_images;
+  List<ProductImage> list_images;
   DateTime upload_time;
   List<DocumentReference<Map<String, dynamic>>> list_categories;
-  List<ProductPrice>? list_prices;
+  List<ProductPrice> list_prices;
   num high_price;
   num low_price;
-  List<String>? descriptions;
+  List<String> descriptions;
   String? price_type;
   bool? is_live;
   Reference? product_sr;
@@ -37,6 +37,8 @@ class Product {
   });
 
   //
+  static const table_name = "products";
+  //
   static const name_key = "name";
   static const list_images_key = "list_images";
   static const upload_time_key = "upload_time";
@@ -51,11 +53,11 @@ class Product {
   static const product_sr_key = "product_sr";
   static const price_type_key = "price_type";
   //
-  static final col_ref = FirebaseFirestore.instance.collection("products");
+  static final col_ref = FirebaseFirestore.instance.collection(table_name);
 
   static Future<Map<String, dynamic>> fromID(int number) async {
-    return await Supa.client
-        .from("products")
+    return await supabase
+        .from(table_name)
         .select<Map<String, dynamic>>()
         .eq(id_key, number)
         .limit(1)
@@ -64,24 +66,24 @@ class Product {
 
 //
   static final query_prefix =
-      Supa.client.from("products").select<List<Map<String, dynamic>>>();
+      supabase.from(table_name).select<List<Map<String, dynamic>>>();
 
   //
   Map<String, dynamic> toMap() {
     return {
       name_key: name,
-      list_images_key: list_images?.map((e) => e.toMap()).toList(),
+      list_images_key: list_images.map((e) => e.toMap()).toList(),
       upload_time_key: upload_time.toIso8601String(),
       list_categories_key: list_categories.map((e) => e.id).toList(),
-      high_price_key: list_prices != null
-          ? (list_prices_desc(list_prices!).last.price ??
-              list_prices_desc(list_prices!).last.mrp)
+      high_price_key: list_prices.isNotEmpty
+          ? (list_prices_desc(list_prices).last.price ??
+              list_prices_desc(list_prices).last.mrp)
           : high_price,
-      low_price_key: list_prices != null
-          ? (list_prices_desc(list_prices!).first.price ??
-              list_prices_desc(list_prices!).first.mrp)
+      low_price_key: list_prices.isNotEmpty
+          ? (list_prices_desc(list_prices).first.price ??
+              list_prices_desc(list_prices).first.mrp)
           : low_price,
-      list_prices_key: list_prices?.map((e) => e.toMap()).toList(),
+      list_prices_key: list_prices.map((e) => e.toMap()).toList(),
       descriptions_key: descriptions,
       is_live_key: is_live,
       id_key: id,
@@ -93,26 +95,30 @@ class Product {
   //
   static Product fromSupa(Map json) {
     var listImages = json[list_images_key] as List?;
-    var listPrcs = (json[list_prices_key] as List?)
-        ?.mapIndexed((index, e) => ProductPrice.fromMap(e as Map, index))
-        .toList();
-    listPrcs?.sort((a, b) => (a.price ?? a.mrp).compareTo(b.price ?? b.mrp));
+    List<ProductPrice> listPrcs = (json[list_prices_key] as List?)
+            ?.mapIndexed((index, e) => ProductPrice.fromMap(e as Map, index))
+            .toList() ??
+        [];
 
-    var listCat = (json[list_categories_key] as List?)
-        ?.map(((e) => e.toString()))
-        .toList();
+    listPrcs.sort((a, b) => (a.price ?? a.mrp).compareTo(b.price ?? b.mrp));
+
     return Product(
       name: json[name_key] ?? "",
-      list_images: listImages?.map((e) => ProductImage.fromMap(e)).toList(),
+      list_images:
+          listImages?.map((e) => ProductImage.fromMap(e as Map)).toList() ?? [],
       list_prices: listPrcs,
       upload_time:
           DateTime.tryParse(json[upload_time_key].toString()) ?? DateTime.now(),
-      low_price: (listPrcs?.first.price ?? listPrcs?.first.mrp) ?? 0,
-      high_price: (listPrcs?.last.price ?? listPrcs?.last.mrp) ?? 0,
-      list_categories:
-          listCat?.map((e) => ShopCategory.col_ref.doc(e)).toList() ?? [],
-      descriptions:
-          (json[descriptions_key] as List?)?.map((e) => e.toString()).toList(),
+      low_price: (listPrcs.first.price ?? listPrcs.first.mrp),
+      high_price: (listPrcs.last.price ?? listPrcs.last.mrp),
+      list_categories: (json[list_categories_key] as List?)
+              ?.map((e) => ShopCategory.col_ref.doc(e))
+              .toList() ??
+          [],
+      descriptions: (json[descriptions_key] as List?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       is_live: json[is_live_key],
       price_type: json[price_type_key],
       id: json[id_key],
@@ -140,10 +146,15 @@ class Product {
 
   //
   // static Future<void> print_supa() async {
-  //   final data = await Supa.client.from('products').select('*').eq("id", 1);
+  //   final data = await Supa.client.from('products').select('*');
   //   if (data.runtimeType == List) {
   //     for (var dt in data) {
-  //       print(fromSupa(dt).toMap());
+  //       var pd = fromSupa(dt);
+  //       List<ProductPrice> lps = [];
+  //       for (var lp in pd.list_prices) {
+  //         lp.id = getRandomString(5);
+  //         lps.add(lp);
+  //       }
   //     }
   //   }
   // }
@@ -158,7 +169,7 @@ class ProductPrice {
   num? price;
   int stock_available;
   int max_per_order;
-  int id;
+  String id;
 
   ProductPrice({
     required this.price_name,
@@ -195,7 +206,7 @@ class ProductPrice {
       price: json[price_key],
       max_per_order: json[max_per_order_key] ?? 1,
       stock_available: json[stock_available_key] ?? 1,
-      id: json[id_key] ?? index,
+      id: json[id_key] ?? index.toString(),
     );
   }
 }

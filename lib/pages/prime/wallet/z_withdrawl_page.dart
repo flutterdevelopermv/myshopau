@@ -13,10 +13,10 @@ class WithdrawalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var map = {
-      "Total Referral Income": pmm.directIncome * 500,
-      "Total Withdrwal amount": debitsAmount,
-      "Shopping amount": (pmm.directIncome * 500 - debitsAmount) * 0.1,
-      "Balance Amount": (pmm.directIncome * 500 - debitsAmount) * 0.9,
+      // "Total Referral Income": pmm.directIncome * 500,
+      // "Total Withdrwal amount": debitsAmount,
+      // "Shopping amount": (pmm.directIncome * 500 - debitsAmount) * 0.1,
+      // "Balance Amount": (pmm.directIncome * 500 - debitsAmount) * 0.9,
     };
     return Scaffold(
       appBar: AppBar(title: const Text("Referral Withdraw")),

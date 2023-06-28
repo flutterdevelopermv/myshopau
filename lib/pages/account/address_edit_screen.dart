@@ -8,7 +8,7 @@ import 'package:myshopau/models/auth_user.dart';
 import '../../models/address_model.dart';
 
 class AddressEditScreen extends StatelessWidget {
-  AddressModel am;
+  AddressM am;
   AddressEditScreen(this.am, {Key? key}) : super(key: key);
 
   @override
@@ -83,7 +83,7 @@ class AddressEditScreen extends StatelessWidget {
               onPressed: () async {
                 Reacts.isLoading.value = true;
                 if (isAllValid()) {
-                  am = AddressModel(
+                  am = AddressM(
                       name: tc.name.text,
                       phone: tc.phone.text,
                       house: tc.house.text,
@@ -101,7 +101,7 @@ class AddressEditScreen extends StatelessWidget {
                   if (am.docRef != null) {
                     await am.docRef!.set(am.toMap(), SetOptions(merge: true));
                   } else {
-                    await AddressModel.col_ref.add(am.toMap());
+                    await AddressM.col_ref.add(am.toMap());
                   }
 
                   Get.back();

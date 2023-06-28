@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'cart.dart';
+
 class Coupon {
+  //
+  final int coupon_id;
+  //
   final String coupon_code;
   //
   final bool is_active;
@@ -22,7 +27,6 @@ class Coupon {
   final bool thorough_bank_only;
   final bool thorough_zero_charge_gateway_only;
   //
-  final bool can_club_with_other_coupon;
   final int max_times_per_user;
   //
   final num min_order_value;
@@ -30,19 +34,24 @@ class Coupon {
   final num coupon_percentage;
   final num max_coupon_amount;
   //
-  final List<int> include_categories;
-  final List<int> exclude_categories;
-  final List<int> include_products;
-  final List<int> exclude_products;
-  final List<String> include_users;
-  final List<String> exclude_users;
+  final List<int> eligible_categories;
+  final List<int> ineligible_categories;
+  final List<int> eligible_products;
+  final List<int> ineligible_products;
+  final List<String> eligible_users;
+  final List<String> ineligible_users;
+  final List<Coupon> can_merge_coupons;
+  final List<Coupon> cannot_merge_coupons;
   //
   final String coupon_title;
   final String coupon_description;
   final String? coupon_image_url;
 
+  DocumentReference<Map<String, dynamic>>? docRef;
+
   //
   Coupon({
+    required this.coupon_id,
     required this.coupon_code,
 
     //
@@ -65,7 +74,6 @@ class Coupon {
     required this.thorough_bank_only,
     required this.thorough_zero_charge_gateway_only,
     //
-    required this.can_club_with_other_coupon,
     required this.max_times_per_user,
     //
     required this.min_order_value,
@@ -73,12 +81,14 @@ class Coupon {
     required this.coupon_percentage,
     required this.max_coupon_amount,
     //
-    required this.include_categories,
-    required this.exclude_categories,
-    required this.include_products,
-    required this.exclude_products,
-    required this.include_users,
-    required this.exclude_users,
+    required this.eligible_categories,
+    required this.ineligible_categories,
+    required this.eligible_products,
+    required this.ineligible_products,
+    required this.eligible_users,
+    required this.ineligible_users,
+    required this.can_merge_coupons,
+    required this.cannot_merge_coupons,
     //
     required this.coupon_title,
     required this.coupon_description,
@@ -88,3 +98,20 @@ class Coupon {
   //
   static final col_ref = FirebaseFirestore.instance.collection("coupons");
 }
+
+//
+
+class OrderCoupon  {
+
+  num? applied_amount;
+  Coupon coupon;
+
+  OrderCoupon({
+    required this.applied_amount,
+   required this.coupon,
+  });
+
+ 
+}
+
+//

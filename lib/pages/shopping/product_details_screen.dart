@@ -39,19 +39,19 @@ class ProductViewScreen extends StatelessWidget {
                       onPageChanged: (index, reason) {
                         imageIndex.value = index;
                       }),
-                  itemCount: pm.list_images?.length,
+                  itemCount: pm.list_images.length,
                   itemBuilder: (BuildContext context, int itemIndex,
                           int pageViewIndex) =>
                       Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     // color: Colors.orange.shade100,
                     child: CachedNetworkImage(
-                        imageUrl: pm.list_images?[itemIndex].url ?? ""),
+                        imageUrl: pm.list_images[itemIndex].url),
                   ),
                 ),
                 const SizedBox(height: 5),
                 Obx(() => DotsIndicator(
-                      dotsCount: pm.list_images?.length ?? 0,
+                      dotsCount: pm.list_images.length,
                       position: imageIndex.value.toDouble(),
                       decorator: DotsDecorator(
                         size: const Size.square(9.0),
@@ -75,14 +75,14 @@ class ProductViewScreen extends StatelessWidget {
                           textScaleFactor: 1.5,
                         ),
                         Text(
-                          "${pm.list_prices?.first.mrp}  ",
+                          "${pm.list_prices.first.mrp}  ",
                           textScaleFactor: 1.5,
                           style: const TextStyle(
                             decoration: TextDecoration.lineThrough,
                           ),
                         ),
                         Text(
-                          "\u{20B9}${pm.list_prices?.first.price}",
+                          "\u{20B9}${pm.list_prices.first.price}",
                           textScaleFactor: 1.5,
                         ),
                       ],
@@ -92,7 +92,7 @@ class ProductViewScreen extends StatelessWidget {
                 const SizedBox(height: 7),
                 if (pm.descriptions != null)
                   Column(
-                    children: pm.descriptions!
+                    children: pm.descriptions
                         .map((e) => Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../models/primer.dart';
@@ -48,8 +47,10 @@ class _WalletsScreenState extends State<WalletsScreen>
         child: TabBarView(
           controller: tabC,
           children: [
-            MatrixWalletWidget(widget.pmr),
-            DirectWalletWidget(widget.pmr),
+            const SizedBox(),
+            // MatrixWalletWidget(widget.pmr),
+            const SizedBox(),
+            // DirectWalletWidget(widget.pmr),
             JoiningBonusWidget(widget.pmr),
           ],
         ),

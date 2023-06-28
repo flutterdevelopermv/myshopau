@@ -37,7 +37,23 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (FireUser.user() != null) profileW(),
-          const Divider(thickness: 2),
+          const Divider(),
+          GFListTile(
+            shadow: const BoxShadow(color: Colors.transparent),
+            avatar: const Icon(MdiIcons.handCoinOutline),
+            title: TextButton(onPressed: () {}, child: const Text("AU Coins")),
+            icon: TextButton(
+                onPressed: () {}, child: const TextW("Check Balance")),
+          ),
+          const Divider(),
+          GFListTile(
+            shadow: const BoxShadow(color: Colors.transparent),
+            avatar: const Icon(MdiIcons.cashMultiple),
+            title: TextButton(onPressed: () {}, child: const Text("AU Cash")),
+            icon: TextButton(
+                onPressed: () {}, child: const TextW("Check Balance")),
+          ),
+          const Divider(),
           GFListTile(
             shadow: const BoxShadow(color: Colors.transparent),
             avatar: const Icon(MdiIcons.orderBoolDescending),

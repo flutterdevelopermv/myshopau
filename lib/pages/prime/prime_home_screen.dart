@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:myshopau/bottom_navigator.dart';
 import 'package:myshopau/pages/a_widgets/text_widget.dart';
 
 import '../../models/prime_member.dart';
@@ -233,7 +234,8 @@ class PrimeHomeScreen extends StatelessWidget {
               TextButton(
                   onPressed: () async {
                     await Future.delayed(const Duration(milliseconds: 250));
-                    Get.offAllNamed("/prime");
+                    Get.offAll(() => const BottomBarWithBody());
+                    // Get.offAllNamed("/prime");
                   },
                   child: Row(
                     children: const [

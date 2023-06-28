@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myshopau/models/auth_user.dart';
+import 'package:myshopau/pages/a_widgets/badge_widget.dart';
 import 'package:myshopau/pages/account/phone_page.dart';
 
+import '../../models/test trans/excel_trans.dart';
 import '../a_widgets/text_widget.dart';
 import 'product_details_screen.dart';
 //
@@ -44,6 +46,20 @@ class _ShoppingScreenHomePageState extends State<ShoppingScreenHomePage> {
             appBar: AppBar(
               title: const Text("MyShopAU"),
               actions: [
+                IconButton(
+                    onPressed: () async {
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      await ExcelTrans.send_BankTrans();
+                    },
+                    icon: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: CartItem.col_ref
+                            .orderBy(CartItem.updated_time_key)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return BadgeIcon(
+                              count: snapshot.data?.size ?? 0,
+                              iconData: MdiIcons.cart);
+                        })),
                 // if (user != null)
                 //   IconButton(
                 //     onPressed: () async {
@@ -134,7 +150,7 @@ class ProductsGridList extends StatelessWidget {
                             child: SizedBox(
                               height: 120,
                               child: CachedNetworkImage(
-                                  imageUrl: pm.list_images?.first.url ?? "",
+                                  imageUrl: pm.list_images.first.url,
                                   errorWidget: (context, url, error) =>
                                       Container(color: Colors.black12),
                                   fit: BoxFit.fill),
@@ -150,41 +166,39 @@ class ProductsGridList extends StatelessWidget {
                                 children: [
                                   Text(pm.name),
                                   const SizedBox(height: 10),
-                                  if (pm.list_prices != null)
-                                    (pm.list_prices!.first.mrp ==
-                                            pm.list_prices!.first.price)
-                                        ? Text(
-                                            "\u{20B9}${pm.list_prices?.first.mrp}",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "\u{20B9}${pm.list_prices?.first.price}",
+                                  (pm.list_prices.first.mrp ==
+                                          pm.list_prices.first.price)
+                                      ? Text(
+                                          "\u{20B9}${pm.list_prices.first.mrp}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "\u{20B9}${pm.list_prices.first.price}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                                "\u{20B9}${pm.list_prices.first.mrp}",
                                                 style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                  "\u{20B9}${pm.list_prices?.first.mrp}",
-                                                  style: const TextStyle(
-                                                      decoration: TextDecoration
-                                                          .lineThrough),
-                                                  textScaleFactor: 0.9),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                  "${((1 - pm.list_prices!.first.price! / pm.list_prices!.first.mrp) * 100).toStringAsFixed(0)}% off",
-                                                  textScaleFactor: 0.9,
-                                                  style: TextStyle(
-                                                    color: Colors
-                                                        .deepOrange.shade600,
-                                                  )),
-                                            ],
-                                          ),
+                                                    decoration: TextDecoration
+                                                        .lineThrough),
+                                                textScaleFactor: 0.9),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                                "${((1 - pm.list_prices.first.price! / pm.list_prices.first.mrp) * 100).toStringAsFixed(0)}% off",
+                                                textScaleFactor: 0.9,
+                                                style: TextStyle(
+                                                  color: Colors
+                                                      .deepOrange.shade600,
+                                                )),
+                                          ],
+                                        ),
                                   const SizedBox(height: 5),
                                   Align(
                                       alignment: Alignment.bottomRight,
@@ -207,11 +221,11 @@ class ProductsGridList extends StatelessWidget {
 
   //
   Widget addToCart(Product pd) {
-    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: CartItem.fromProduct(pd).docRef?.snapshots(),
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: CartItem.fromProduct(pd).item_ref().snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.data != null && snapshot.data!.exists) {
-          var ct = CartItem.fromDS(snapshot.data!);
+        if (snapshot.data != null && snapshot.data!.docs.isNotEmpty) {
+          var ct = CartItem.fromDS(snapshot.data!.docs.first);
           return Column(
             children: [
               const SizedBox(height: 5),
@@ -226,10 +240,10 @@ class ProductsGridList extends StatelessWidget {
                       onPressed: () async {
                         await Future.delayed(const Duration(microseconds: 900));
                         if (ct.quantity == 1) {
-                          await ct.docRef!.delete();
+                          await ct.docRef?.delete();
                         } else {
                           ct.quantity--;
-                          await ct.docRef!.update(ct.toMap());
+                          await ct.docRef?.update(ct.toMap());
                         }
                       }),
                   Padding(
@@ -239,10 +253,10 @@ class ProductsGridList extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.purple,
-                          decoration: ct.quantity >
-                                  pd.list_prices!.first.stock_available
-                              ? TextDecoration.lineThrough
-                              : null),
+                          decoration:
+                              ct.quantity > pd.list_prices.first.stock_available
+                                  ? TextDecoration.lineThrough
+                                  : null),
                     ),
                   ),
                   GFIconButton(
@@ -252,8 +266,8 @@ class ProductsGridList extends StatelessWidget {
                     icon: const Icon(MdiIcons.plus),
                     onPressed: () async {
                       await Future.delayed(const Duration(microseconds: 900));
-                      if (ct.quantity < pd.list_prices!.first.max_per_order &&
-                          ct.quantity < pd.list_prices!.first.stock_available) {
+                      if (ct.quantity < pd.list_prices.first.max_per_order &&
+                          ct.quantity < pd.list_prices.first.stock_available) {
                         ct.quantity++;
                         await ct.docRef!.update(ct.toMap());
                       }
@@ -273,8 +287,7 @@ class ProductsGridList extends StatelessWidget {
           onPressed: () async {
             await Future.delayed(const Duration(microseconds: 900));
             if (FireUser.user() != null) {
-              await CartItem.col_ref.doc(pd.id.toString()).set(
-                  CartItem.fromProduct(pd).toMap(), SetOptions(merge: true));
+              await CartItem.col_ref.add(CartItem.fromProduct(pd).toMap());
             }
           },
         );

@@ -42,47 +42,49 @@ class _ReferalBenefitsScreenState extends State<ReferalBenefitsScreen>
       body: TabBarView(
         controller: tabC,
         children: [
-          StreamDocBuilder(
-            stream: widget.pmm.docRef!,
-            builder: (snapshot) {
-              widget.pmm = Primer.fromDS(snapshot.data()!);
-              widget.pmm.docRef = snapshot.reference;
-              return DirectIncomeHistory(widget.pmm);
-            },
-          ),
-          FirestoreListViewBuilder(
-            query: withdrawMOs.withdrawalsHistoryCR(widget.pmm),
-            builder: (p0, qds) {
-              var wm = WithdrawModel.fromMap(qds.data());
-              return GFListTile(
-                color: Colors.blue.shade100,
-                shadow: const BoxShadow(),
-                titleText:
-                    DateFormat("dd MMM yyyy, h:mm a").format(wm.requestedTime),
-                icon: Text("₹ ${wm.amount}"),
-                subTitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    wm.isSettled == true
-                        ? const Text('Settled',
-                            style: TextStyle(color: Colors.green))
-                        : const Text('Under Progress',
-                            style: TextStyle(color: Colors.red)),
-                    const SizedBox(height: 10),
-                    if (wm.adminComments != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          "** ${wm.adminComments!}",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
-          ),
+          SizedBox(height: 30, child: Center(child: Text("Credits"))),
+           SizedBox(height: 30, child: Center(child: Text("Withdrawls"))),
+          // StreamDocBuilder(
+          //   stream: widget.pmm.docRef!,
+          //   builder: (snapshot) {
+          //     widget.pmm = Primer.fromDS(snapshot.data()!);
+          //     widget.pmm.docRef = snapshot.reference;
+          //     return DirectIncomeHistory(widget.pmm);
+          //   },
+          // ),
+          // FirestoreListViewBuilder(
+          //   query: withdrawMOs.withdrawalsHistoryCR(widget.pmm),
+          //   builder: (p0, qds) {
+          //     var wm = WithdrawModel.fromMap(qds.data());
+          //     return GFListTile(
+          //       color: Colors.blue.shade100,
+          //       shadow: const BoxShadow(),
+          //       titleText:
+          //           DateFormat("dd MMM yyyy, h:mm a").format(wm.requestedTime),
+          //       icon: Text("₹ ${wm.amount}"),
+          //       subTitle: Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           const SizedBox(height: 10),
+          //           wm.isSettled == true
+          //               ? const Text('Settled',
+          //                   style: TextStyle(color: Colors.green))
+          //               : const Text('Under Progress',
+          //                   style: TextStyle(color: Colors.red)),
+          //           const SizedBox(height: 10),
+          //           if (wm.adminComments != null)
+          //             Padding(
+          //               padding: const EdgeInsets.symmetric(vertical: 10),
+          //               child: Text(
+          //                 "** ${wm.adminComments!}",
+          //                 style: const TextStyle(fontWeight: FontWeight.bold),
+          //               ),
+          //             ),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

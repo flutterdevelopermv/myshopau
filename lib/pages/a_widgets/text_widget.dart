@@ -20,9 +20,10 @@ class TextW extends StatelessWidget {
   final bool is_heading;
   final bool is_subtitle;
   final double? minFontSize;
-
+  final double? maxFontSize;
   final EdgeInsetsGeometry? padding;
   final double? height;
+  final double? letterSpacing;
 
   //
   const TextW(
@@ -46,6 +47,8 @@ class TextW extends StatelessWidget {
     this.is_subtitle = false,
     this.padding,
     this.height,
+    this.maxFontSize,
+    this.letterSpacing,
     super.key,
   });
 
@@ -58,10 +61,12 @@ class TextW extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: maxLines ?? 1,
         minFontSize: minFontSize ?? 12,
+        maxFontSize: maxFontSize ?? double.infinity,
         textScaleFactor:
-            textScaleFactor ?? (is_heading ? 1.1 : (is_subtitle ? 0.9 : null)),
+            textScaleFactor ?? (is_heading ? 1.1 : (is_subtitle ? 0.9 : 1)),
         style: TextStyle(
             fontSize: fontSize,
+            letterSpacing: letterSpacing,
             fontWeight: is_bold ? FontWeight.w500 : fontWeight,
             color: color ?? (is_white ? Colors.white : null),
             decoration: decoration,
@@ -77,10 +82,11 @@ class TextW extends StatelessWidget {
           softWrap: softWrap,
           overflow: overflow,
           maxLines: maxLines,
-          textScaleFactor: textScaleFactor ??
-              (is_heading ? 1.1 : (is_subtitle ? 0.9 : null)),
+          textScaleFactor:
+              textScaleFactor ?? (is_heading ? 1.1 : (is_subtitle ? 0.9 : 1)),
           style: TextStyle(
             fontSize: fontSize,
+            letterSpacing: letterSpacing,
             fontWeight: is_bold ? FontWeight.w500 : fontWeight,
             color: color ?? (is_white ? Colors.white : null),
             decoration: decoration,
